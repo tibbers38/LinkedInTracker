@@ -1,0 +1,390 @@
+{
+    "data": {
+        "data": {
+            "identityDashGameConnectionsEntitiesByOptedInToLeaderboardAndPlayed": {
+                "paging": {
+                    "count": 15,
+                    "start": 0,
+                    "total": 4,
+                    "$recipeTypes": [
+                        "com.linkedin.b27dcefbc42cdea16d7c669fd3ee5b20"
+                    ],
+                    "$type": "com.linkedin.restli.common.CollectionMetadata"
+                },
+                "$recipeTypes": [
+                    "com.linkedin.19ff78d7f8a8e993b4740cd065ca1382"
+                ],
+                "elements": [
+                    {
+                        "completionAttributes": {
+                            "isHintFree": true,
+                            "$recipeTypes": [
+                                "com.linkedin.e74692a6b69fcc9252da2d10bbbe1eef"
+                            ],
+                            "isMistakeFree": true,
+                            "$type": "com.linkedin.voyager.dash.identity.game.GameCompletionAttributes"
+                        },
+                        "reactionSummary": null,
+                        "isFlawless": false,
+                        "ranking": 1,
+                        "gameScore": {
+                            "timeElapsed": 14,
+                            "totalGuessCount": null
+                        },
+                        "playerDetails": {
+                            "referencePlayer": null,
+                            "player": {
+                                "*profile": "urn:li:fsd_profile:ACoAACGNW-QBo3p5YkuQZNYXNNi2wE_UPhyKNrA",
+                                "daysSinceFirstPlay": 123,
+                                "$recipeTypes": [
+                                    "com.linkedin.e0c9545a336f6e104c68ef42d442c775"
+                                ],
+                                "$type": "com.linkedin.voyager.dash.identity.game.Player"
+                            }
+                        },
+                        "$recipeTypes": [
+                            "com.linkedin.0755ddd7107325ca74e0171e904b044c"
+                        ],
+                        "isFavorite": false,
+                        "$type": "com.linkedin.voyager.dash.identity.game.GameConnectionsEntity"
+                    },
+                    {
+                        "completionAttributes": {
+                            "isHintFree": true,
+                            "$recipeTypes": [
+                                "com.linkedin.e74692a6b69fcc9252da2d10bbbe1eef"
+                            ],
+                            "isMistakeFree": false,
+                            "$type": "com.linkedin.voyager.dash.identity.game.GameCompletionAttributes"
+                        },
+                        "reactionSummary": null,
+                        "isFlawless": false,
+                        "ranking": 2,
+                        "gameScore": {
+                            "timeElapsed": 15,
+                            "totalGuessCount": null
+                        },
+                        "playerDetails": {
+                            "referencePlayer": null,
+                            "player": {
+                                "*profile": "urn:li:fsd_profile:ACoAADM74wABak0Y57YuTVcyCnDpr_uPjLQiLeE",
+                                "daysSinceFirstPlay": 122,
+                                "$recipeTypes": [
+                                    "com.linkedin.e0c9545a336f6e104c68ef42d442c775"
+                                ],
+                                "$type": "com.linkedin.voyager.dash.identity.game.Player"
+                            }
+                        },
+                        "$recipeTypes": [
+                            "com.linkedin.0755ddd7107325ca74e0171e904b044c"
+                        ],
+                        "isFavorite": false,
+                        "$type": "com.linkedin.voyager.dash.identity.game.GameConnectionsEntity"
+                    },
+                    {
+                        "completionAttributes": {
+                            "isHintFree": true,
+                            "$recipeTypes": [
+                                "com.linkedin.e74692a6b69fcc9252da2d10bbbe1eef"
+                            ],
+                            "isMistakeFree": false,
+                            "$type": "com.linkedin.voyager.dash.identity.game.GameCompletionAttributes"
+                        },
+                        "reactionSummary": null,
+                        "isFlawless": false,
+                        "ranking": 3,
+                        "gameScore": {
+                            "timeElapsed": 16,
+                            "totalGuessCount": null
+                        },
+                        "playerDetails": {
+                            "referencePlayer": null,
+                            "player": {
+                                "*profile": "urn:li:fsd_profile:ACoAAD3iUTMBLJ7hg7JkDM_HMpAHLzJslz8he1M",
+                                "daysSinceFirstPlay": 48,
+                                "$recipeTypes": [
+                                    "com.linkedin.e0c9545a336f6e104c68ef42d442c775"
+                                ],
+                                "$type": "com.linkedin.voyager.dash.identity.game.Player"
+                            }
+                        },
+                        "$recipeTypes": [
+                            "com.linkedin.0755ddd7107325ca74e0171e904b044c"
+                        ],
+                        "isFavorite": false,
+                        "$type": "com.linkedin.voyager.dash.identity.game.GameConnectionsEntity"
+                    },
+                    {
+                        "completionAttributes": {
+                            "isHintFree": true,
+                            "$recipeTypes": [
+                                "com.linkedin.e74692a6b69fcc9252da2d10bbbe1eef"
+                            ],
+                            "isMistakeFree": false,
+                            "$type": "com.linkedin.voyager.dash.identity.game.GameCompletionAttributes"
+                        },
+                        "reactionSummary": null,
+                        "isFlawless": false,
+                        "ranking": 4,
+                        "gameScore": {
+                            "timeElapsed": 44,
+                            "totalGuessCount": null
+                        },
+                        "playerDetails": {
+                            "referencePlayer": null,
+                            "player": {
+                                "*profile": "urn:li:fsd_profile:ACoAABaO00EBDK4gLN8Knp5tVbqR_GnbNk-gmUA",
+                                "daysSinceFirstPlay": 117,
+                                "$recipeTypes": [
+                                    "com.linkedin.e0c9545a336f6e104c68ef42d442c775"
+                                ],
+                                "$type": "com.linkedin.voyager.dash.identity.game.Player"
+                            }
+                        },
+                        "$recipeTypes": [
+                            "com.linkedin.0755ddd7107325ca74e0171e904b044c"
+                        ],
+                        "isFavorite": false,
+                        "$type": "com.linkedin.voyager.dash.identity.game.GameConnectionsEntity"
+                    }
+                ],
+                "$type": "com.linkedin.restli.common.CollectionResponse"
+            },
+            "$recipeTypes": [
+                "com.linkedin.fc1bffeb5293476fe2fab9e189990f9f"
+            ],
+            "$type": "com.linkedin.fc1bffeb5293476fe2fab9e189990f9f"
+        }
+    },
+    "included": [
+        {
+            "firstName": "Trang",
+            "lastName": "Nguyen",
+            "memorialized": false,
+            "profilePicture": {
+                "displayImageReferenceResolutionResult": {
+                    "vectorImage": {
+                        "attribution": null,
+                        "$recipeTypes": [
+                            "com.linkedin.8a4bd40ac38cb5fe338fc8210f9f48a0"
+                        ],
+                        "artifacts": [
+                            {
+                                "width": 100,
+                                "$recipeTypes": [
+                                    "com.linkedin.bb0ad9ed73bbfce59a1db11e998e44b6"
+                                ],
+                                "fileIdentifyingUrlPathSegment": "100_100/profile-displayphoto-shrink_100_100/0/1723656560947?e=1785974400&v=beta&t=AUNmr2KTmsYI6DzVjSMx7WTTpoBPbeI-CYYQRYHzynI",
+                                "expiresAt": 1785974400000,
+                                "height": 100,
+                                "$type": "com.linkedin.common.VectorArtifact"
+                            },
+                            {
+                                "width": 200,
+                                "$recipeTypes": [
+                                    "com.linkedin.bb0ad9ed73bbfce59a1db11e998e44b6"
+                                ],
+                                "fileIdentifyingUrlPathSegment": "200_200/profile-displayphoto-shrink_200_200/0/1723656560947?e=1785974400&v=beta&t=5RIkhJPNIf63TeXYLBN9y3kB8kphuSlNX1fEcQM9ElA",
+                                "expiresAt": 1785974400000,
+                                "height": 200,
+                                "$type": "com.linkedin.common.VectorArtifact"
+                            },
+                            {
+                                "width": 400,
+                                "$recipeTypes": [
+                                    "com.linkedin.bb0ad9ed73bbfce59a1db11e998e44b6"
+                                ],
+                                "fileIdentifyingUrlPathSegment": "400_400/profile-displayphoto-shrink_400_400/0/1723656560947?e=1785974400&v=beta&t=ezHYxmhLw9xclUQNRjTUAnTwu_VFaUvDPcCgCirlrq0",
+                                "expiresAt": 1785974400000,
+                                "height": 400,
+                                "$type": "com.linkedin.common.VectorArtifact"
+                            },
+                            {
+                                "width": 800,
+                                "$recipeTypes": [
+                                    "com.linkedin.bb0ad9ed73bbfce59a1db11e998e44b6"
+                                ],
+                                "fileIdentifyingUrlPathSegment": "800_800/profile-displayphoto-shrink_800_800/0/1723656560975?e=1785974400&v=beta&t=64662R0CpWD2Ou9RjAEZ4YeCJILaj0MzCOh275XWt3U",
+                                "expiresAt": 1785974400000,
+                                "height": 800,
+                                "$type": "com.linkedin.common.VectorArtifact"
+                            }
+                        ],
+                        "rootUrl": "https://media.licdn.com/dms/image/v2/D5603AQEmC6ueEzTZeQ/profile-displayphoto-shrink_",
+                        "$type": "com.linkedin.common.VectorImage"
+                    }
+                },
+                "$recipeTypes": [
+                    "com.linkedin.ba9248e3caaa41e24bbfa83099be22f5"
+                ],
+                "$type": "com.linkedin.voyager.dash.identity.profile.PhotoFilterPicture"
+            },
+            "entityUrn": "urn:li:fsd_profile:ACoAADM74wABak0Y57YuTVcyCnDpr_uPjLQiLeE",
+            "headline": "Legal Assistant at NSRP",
+            "publicIdentifier": "trang-nguyen-194a481bb",
+            "$recipeTypes": [
+                "com.linkedin.bfb3e804b74d80bb2487f07d4866facf"
+            ],
+            "$type": "com.linkedin.voyager.dash.identity.profile.Profile"
+        },
+        {
+            "firstName": "Nam",
+            "lastName": "Lê Hải",
+            "memorialized": false,
+            "profilePicture": {
+                "displayImageReferenceResolutionResult": {
+                    "vectorImage": {
+                        "attribution": null,
+                        "$recipeTypes": [
+                            "com.linkedin.8a4bd40ac38cb5fe338fc8210f9f48a0"
+                        ],
+                        "artifacts": [
+                            {
+                                "width": 400,
+                                "$recipeTypes": [
+                                    "com.linkedin.bb0ad9ed73bbfce59a1db11e998e44b6"
+                                ],
+                                "fileIdentifyingUrlPathSegment": "scale_400_400/B56ZnDRlOSI4Ag-/0/1759917791297?e=1785974400&v=beta&t=FJGgAfVDc2KcF5tMIIJF854MKdyhbCqC80tXP6q2UzA",
+                                "expiresAt": 1785974400000,
+                                "height": 400,
+                                "$type": "com.linkedin.common.VectorArtifact"
+                            },
+                            {
+                                "width": 100,
+                                "$recipeTypes": [
+                                    "com.linkedin.bb0ad9ed73bbfce59a1db11e998e44b6"
+                                ],
+                                "fileIdentifyingUrlPathSegment": "scale_100_100/B56ZnDRlOSI4Ac-/0/1759917791297?e=1785974400&v=beta&t=mQ6JfKT1W7E_Mj2Er0DOdBYUC_2Cmii0uVFaIgCHrho",
+                                "expiresAt": 1785974400000,
+                                "height": 100,
+                                "$type": "com.linkedin.common.VectorArtifact"
+                            },
+                            {
+                                "width": 200,
+                                "$recipeTypes": [
+                                    "com.linkedin.bb0ad9ed73bbfce59a1db11e998e44b6"
+                                ],
+                                "fileIdentifyingUrlPathSegment": "scale_200_200/B56ZnDRlOSI4AY-/0/1759917791297?e=1785974400&v=beta&t=97N8sZnQwAaCnDGzbP6MUsyEgTajRkrrMAYu_flPYkI",
+                                "expiresAt": 1785974400000,
+                                "height": 200,
+                                "$type": "com.linkedin.common.VectorArtifact"
+                            },
+                            {
+                                "width": 800,
+                                "$recipeTypes": [
+                                    "com.linkedin.bb0ad9ed73bbfce59a1db11e998e44b6"
+                                ],
+                                "fileIdentifyingUrlPathSegment": "crop_800_800/B56ZnDRlOSI4AI-/0/1759917791218?e=1785974400&v=beta&t=t_FmzgVqVqWOWkkiPM0oyE7RyGt54jBrNmGtwT4GRB8",
+                                "expiresAt": 1785974400000,
+                                "height": 800,
+                                "$type": "com.linkedin.common.VectorArtifact"
+                            }
+                        ],
+                        "rootUrl": "https://media.licdn.com/dms/image/v2/D5603AQEfJB5X5lVdKQ/profile-displayphoto-",
+                        "$type": "com.linkedin.common.VectorImage"
+                    }
+                },
+                "$recipeTypes": [
+                    "com.linkedin.ba9248e3caaa41e24bbfa83099be22f5"
+                ],
+                "$type": "com.linkedin.voyager.dash.identity.profile.PhotoFilterPicture"
+            },
+            "entityUrn": "urn:li:fsd_profile:ACoAAD3iUTMBLJ7hg7JkDM_HMpAHLzJslz8he1M",
+            "headline": "IT Security Specialist at NSRP",
+            "publicIdentifier": "nam-lê-hải-66b85624b",
+            "$recipeTypes": [
+                "com.linkedin.bfb3e804b74d80bb2487f07d4866facf"
+            ],
+            "$type": "com.linkedin.voyager.dash.identity.profile.Profile"
+        },
+        {
+            "firstName": "Hieu",
+            "lastName": "Hoang",
+            "memorialized": false,
+            "profilePicture": {
+                "displayImageReferenceResolutionResult": {
+                    "vectorImage": {
+                        "attribution": null,
+                        "$recipeTypes": [
+                            "com.linkedin.8a4bd40ac38cb5fe338fc8210f9f48a0"
+                        ],
+                        "artifacts": [
+                            {
+                                "width": 100,
+                                "$recipeTypes": [
+                                    "com.linkedin.bb0ad9ed73bbfce59a1db11e998e44b6"
+                                ],
+                                "fileIdentifyingUrlPathSegment": "100_100/profile-displayphoto-shrink_100_100/0/1706148138218?e=1785974400&v=beta&t=AV6jb4X2NAb5hnLRsET0EGzTyil-8DPAujU3-D6Wmkc",
+                                "expiresAt": 1785974400000,
+                                "height": 100,
+                                "$type": "com.linkedin.common.VectorArtifact"
+                            },
+                            {
+                                "width": 200,
+                                "$recipeTypes": [
+                                    "com.linkedin.bb0ad9ed73bbfce59a1db11e998e44b6"
+                                ],
+                                "fileIdentifyingUrlPathSegment": "200_200/profile-displayphoto-shrink_200_200/0/1706148138218?e=1785974400&v=beta&t=KedKfHu1eUcc_1PonYbKdSdV71MNmJY_3AUyD2cx-AI",
+                                "expiresAt": 1785974400000,
+                                "height": 200,
+                                "$type": "com.linkedin.common.VectorArtifact"
+                            },
+                            {
+                                "width": 400,
+                                "$recipeTypes": [
+                                    "com.linkedin.bb0ad9ed73bbfce59a1db11e998e44b6"
+                                ],
+                                "fileIdentifyingUrlPathSegment": "400_400/profile-displayphoto-shrink_400_400/0/1706148138218?e=1785974400&v=beta&t=Dy0-5Wof6BSHMQUG6_Pj5Dr0XFS4QYr0MebWW2lC13I",
+                                "expiresAt": 1785974400000,
+                                "height": 400,
+                                "$type": "com.linkedin.common.VectorArtifact"
+                            },
+                            {
+                                "width": 800,
+                                "$recipeTypes": [
+                                    "com.linkedin.bb0ad9ed73bbfce59a1db11e998e44b6"
+                                ],
+                                "fileIdentifyingUrlPathSegment": "800_800/profile-displayphoto-shrink_800_800/0/1706148138218?e=1785974400&v=beta&t=Yi2riPxbZ9mT5iT-WWqCYBJNeBW9LolHetUrkzNvYwI",
+                                "expiresAt": 1785974400000,
+                                "height": 800,
+                                "$type": "com.linkedin.common.VectorArtifact"
+                            }
+                        ],
+                        "rootUrl": "https://media.licdn.com/dms/image/v2/D5603AQHUDZCqqYdk3Q/profile-displayphoto-shrink_",
+                        "$type": "com.linkedin.common.VectorImage"
+                    }
+                },
+                "$recipeTypes": [
+                    "com.linkedin.ba9248e3caaa41e24bbfa83099be22f5"
+                ],
+                "$type": "com.linkedin.voyager.dash.identity.profile.PhotoFilterPicture"
+            },
+            "entityUrn": "urn:li:fsd_profile:ACoAACGNW-QBo3p5YkuQZNYXNNi2wE_UPhyKNrA",
+            "headline": "Full Stack Web Developer",
+            "publicIdentifier": "hieu-hoang-484627138",
+            "$recipeTypes": [
+                "com.linkedin.bfb3e804b74d80bb2487f07d4866facf"
+            ],
+            "$type": "com.linkedin.voyager.dash.identity.profile.Profile"
+        },
+        {
+            "firstName": "Hien",
+            "lastName": "Thai",
+            "memorialized": false,
+            "profilePicture": {
+                "displayImageReferenceResolutionResult": null,
+                "$recipeTypes": [
+                    "com.linkedin.ba9248e3caaa41e24bbfa83099be22f5"
+                ],
+                "$type": "com.linkedin.voyager.dash.identity.profile.PhotoFilterPicture"
+            },
+            "entityUrn": "urn:li:fsd_profile:ACoAABaO00EBDK4gLN8Knp5tVbqR_GnbNk-gmUA",
+            "headline": "Legal Counsel, Jr.",
+            "publicIdentifier": "rachel95",
+            "$recipeTypes": [
+                "com.linkedin.bfb3e804b74d80bb2487f07d4866facf"
+            ],
+            "$type": "com.linkedin.voyager.dash.identity.profile.Profile"
+        }
+    ]
+}

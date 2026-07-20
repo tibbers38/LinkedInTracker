@@ -1,0 +1,9 @@
+{
+    "graphql": {
+        "url": "https://www.linkedin.com/voyager/api/graphql",
+        "queryId": "voyagerIdentityDashGameConnectionsEntities.a5fed1d462445e698d896bd5563fed9c"
+    },
+    "games": {
+        "patches": "urn:li:fsd_game:(ACoAAD3iUTMBLJ7hg7JkDM_HMpAHLzJslz8he1M,8,124)"
+    }
+}
