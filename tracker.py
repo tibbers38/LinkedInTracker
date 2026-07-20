@@ -11,9 +11,6 @@ from http.cookies import SimpleCookie
 
 load_dotenv()
 
-# csrf = os.getenv("CSRF_TOKEN")
-# cookie = os.getenv("COOKIE")
-
 class LinkedInTracker:
 
     def __init__(self):
@@ -37,11 +34,11 @@ class LinkedInTracker:
         players = []
         allowed_urns = set(self.config["players"]["urns"])
         allowed_names = set(self.config["players"]["names"])
-        # Lấy leaderboard
+        # Get leaderboard
         elements = data["data"]["data"][
             "identityDashGameConnectionsEntitiesByOptedInToLeaderboardAndPlayed"
         ]["elements"]
-        # Tạo dictionary để map profile URN -> thông tin người dùng
+        # Create dictionary to map profile URN to user details
         profiles = {}
         for profile in data.get("included", []):
             urn = profile.get("entityUrn")
@@ -70,9 +67,9 @@ class LinkedInTracker:
                 "hint_free": element.get("completionAttributes", {}).get("isHintFree"),
                 "mistake_free": element.get("completionAttributes", {}).get("isMistakeFree")
             })
-            # Sắp xếp theo rank gốc
+            # Sort by overall rank
             players.sort(key=lambda p: p["rank"])
-            # Đánh LocalRank
+            # LocalRank
             for index, player in enumerate(players, start=1):
                 player["local_rank"] = index
         return players
@@ -128,7 +125,6 @@ class LinkedInTracker:
         })
         print("[+] Session created")
 
-    from datetime import date
 
     def has_today_snapshot(self):
         self.cursor.execute("""
@@ -179,7 +175,6 @@ class LinkedInTracker:
         if self.has_today_snapshot():
             print("[+] Today's snapshot already exists.")
             return
-        # self.print_games()
         for game_name, game_urn in self.config["games"].items():
             response = self.fetch_game(game_name, game_urn)
             data = response.json()
