@@ -4,6 +4,7 @@
         "queryId": "voyagerIdentityDashGameConnectionsEntities.a5fed1d462445e698d896bd5563fed9c"
     },
     "games": {
-        "patches": "urn:li:fsd_game:(ACoAAD3iUTMBLJ7hg7JkDM_HMpAHLzJslz8he1M,8,124)"
+        "patches": "https://www.linkedin.com/voyager/api/graphql?variables=(gameUrn:urn%3Ali%3Afsd_game%3A%28ACoAAD3iUTMBLJ7hg7JkDM_HMpAHLzJslz8he1M%2C8%2C124%29,delta:1,start:0,count:15)&queryId=voyagerIdentityDashGameConnectionsEntities.a5fed1d462445e698d896bd5563fed9c",
+        "zip": "https://www.linkedin.com/voyager/api/graphql?variables=(gameUrn:urn%3Ali%3Afsd_game%3A%28ACoAAD3iUTMBLJ7hg7JkDM_HMpAHLzJslz8he1M%2C6%2C490%29,delta:1,start:0,count:15)&queryId=voyagerIdentityDashGameConnectionsEntities.a5fed1d462445e698d896bd5563fed9c"
     }
 }
