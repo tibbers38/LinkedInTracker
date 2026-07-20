@@ -9,5 +9,17 @@
         "mini-sudoku": "https://www.linkedin.com/voyager/api/graphql?variables=(gameUrn:urn%3Ali%3Afsd_game%3A%28ACoAAD3iUTMBLJ7hg7JkDM_HMpAHLzJslz8he1M%2C7%2C343%29,delta:1,start:0,count:15)&queryId=voyagerIdentityDashGameConnectionsEntities.a5fed1d462445e698d896bd5563fed9c",
         "tango": "https://www.linkedin.com/voyager/api/graphql?variables=(gameUrn:urn%3Ali%3Afsd_game%3A%28ACoAAD3iUTMBLJ7hg7JkDM_HMpAHLzJslz8he1M%2C5%2C651%29,delta:1,start:0,count:15)&queryId=voyagerIdentityDashGameConnectionsEntities.a5fed1d462445e698d896bd5563fed9c",
         "queen": "https://www.linkedin.com/voyager/api/graphql?variables=(gameUrn:urn%3Ali%3Afsd_game%3A%28ACoAAD3iUTMBLJ7hg7JkDM_HMpAHLzJslz8he1M%2C3%2C811%29,delta:1,start:0,count:15)&queryId=voyagerIdentityDashGameConnectionsEntities.a5fed1d462445e698d896bd5563fed9c"
+    },
+    "players": {
+        "urns": [
+            "urn:li:fsd_profile:ACoAAD3iUTMBLJ7hg7JkDM_HMpAHLzJslz8he1M",
+            "urn:li:fsd_profile:ACoAABaO00EBDK4gLN8Knp5tVbqR_GnbNk-gmUA",
+            "urn:li:fsd_profile:ACoAADM74wABak0Y57YuTVcyCnDpr_uPjLQiLeE"
+        ],
+        "names": [
+            "Nam Lê Hải",
+            "Trang Nguyen",
+            "Hien Thai"
+        ]
     }
 }
