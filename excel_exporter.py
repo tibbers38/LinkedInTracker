@@ -1,155 +1,61 @@
-"""
-excel_exporter.py
-
-Export leaderboard data from SQLite to Excel.
-"""
-
-from pathlib import Path
 import sqlite3
 
 import pandas as pd
 from openpyxl import Workbook
-from openpyxl.styles import Font
-from openpyxl.utils import get_column_letter
 
 
 class ExcelExporter:
-    """Export leaderboard database to Excel workbook."""
 
-    def __init__(
-        self,
-        db_path: str = "leaderboard.db",
-        output_file: str = "LinkedIn Games.xlsx",
-    ):
-        self.db_path = Path(db_path)
-        self.output_file = Path(output_file)
-
+    def __init__(self):
         self.conn = None
-        self.df = None
+        self.data = None
+        self.workbook = None
 
-        self.workbook = Workbook()
+    def init_database(self):
+        self.conn = sqlite3.connect("leaderboard.db")
+        print("[+] Database connected")
 
-        self.games = []
-        self.players = []
-
-    # ------------------------------------------------------------------
-    # Public
-    # ------------------------------------------------------------------
-
-    def export(self):
-        """Main entry point."""
-
-        self._load_data()
-
-        self._create_summary_sheet()
-
-        for game in self.games:
-            self._create_game_sheet(game)
-
-        self._apply_formatting()
-
-        self._save()
-
-    # ------------------------------------------------------------------
-    # Private
-    # ------------------------------------------------------------------
-
-    def _load_data(self):
-        """Load leaderboard data from SQLite."""
-
-        self.conn = sqlite3.connect(self.db_path)
-
-        query = """
-        SELECT
-            PuzzleDate,
-            Game,
-            PlayerName,
-            Rank
-        FROM Leaderboard
-        ORDER BY PuzzleDate, Game, Rank
-        """
-
-        self.df = pd.read_sql_query(query, self.conn)
-
-        self.games = sorted(self.df["Game"].unique())
-        self.players = sorted(self.df["PlayerName"].unique())
-
-    def _create_summary_sheet(self):
-        """Create summary worksheet."""
-
-        ws = self.workbook.active
-        ws.title = "Summary"
-
-        ws.append(["Game", "Records", "From", "To"])
-
-        for game in self.games:
-
-            df_game = self.df[self.df["Game"] == game]
-
-            ws.append(
-                [
-                    game,
-                    len(df_game),
-                    df_game["PuzzleDate"].min(),
-                    df_game["PuzzleDate"].max(),
-                ]
-            )
-
-    def _create_game_sheet(self, game: str):
-        """Create worksheet for a single game."""
-
-        ws = self.workbook.create_sheet(title=game)
-
-        df_game = self.df[self.df["Game"] == game]
-
-        pivot = (
-            df_game
-            .pivot(
-                index="PuzzleDate",
-                columns="PlayerName",
-                values="Rank",
-            )
-            .sort_index()
+    def load_data(self):
+        self.data = pd.read_sql_query(
+            """
+            SELECT *
+            FROM Leaderboard
+            ORDER BY ActualDate, Game, Rank
+            """,
+            self.conn
         )
 
-        ws.append(["Date"] + list(pivot.columns))
+        print(f"[+] Loaded {len(self.data)} records")
 
-        for date, row in pivot.iterrows():
+    def create_workbook(self):
+        self.workbook = Workbook()
 
-            values = [date]
+        default_sheet = self.workbook.active
+        self.workbook.remove(default_sheet)
 
-            values.extend(row.tolist())
+        print("[+] Workbook created")
 
-            ws.append(values)
+    def create_summary_sheet(self):
+        worksheet = self.workbook.create_sheet("Summary")
 
-    def _apply_formatting(self):
-        """Apply basic formatting."""
+        worksheet["A1"] = "LinkedIn Games Tracker"
+        worksheet["A3"] = "Total Records"
+        worksheet["B3"] = len(self.data)
 
-        for ws in self.workbook.worksheets:
+        print("[+] Summary sheet created")
 
-            # Bold header
-            for cell in ws[1]:
-                cell.font = Font(bold=True)
+    def save_workbook(self):
+        self.workbook.save("result.xlsx")
+        print("[+] Excel exported")
 
-            # Freeze header
-            ws.freeze_panes = "A2"
+    def run(self):
+        self.init_database()
+        self.load_data()
+        self.create_workbook()
+        self.create_summary_sheet()
+        self.save_workbook()
 
-            # Auto width
-            for column_cells in ws.columns:
 
-                length = max(
-                    len(str(cell.value)) if cell.value is not None else 0
-                    for cell in column_cells
-                )
-
-                ws.column_dimensions[
-                    get_column_letter(column_cells[0].column)
-                ].width = length + 2
-
-    def _save(self):
-        """Save workbook."""
-
-        self.workbook.save(self.output_file)
-
-        if self.conn:
-            self.conn.close()
+if __name__ == "__main__":
+    exporter = ExcelExporter()
+    exporter.run()
