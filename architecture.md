@@ -1,46 +1,30 @@
-# LinkedIn Games Tracker
+# LinkedIn Games Tracker Architecture
 
 ## Overview
-LinkedIn Games Tracker là một hệ thống tự động thu thập kết quả các trò chơi trên LinkedIn, lưu trữ lịch sử, tạo báo cáo Excel và phân phối báo cáo tới OneDrive.
-Mục tiêu của project là xây dựng một hệ thống chạy hoàn toàn tự động trên Raspberry Pi.
 
-# System Architecture
+The project automatically retrieves LinkedIn Games leaderboard data, stores it in SQLite, generates an analytical Excel report, and (future) uploads the report to OneDrive via Microsoft Graph.
 
 ```
-                        LinkedIn
-                           │
-                           ▼
-                    Data Collection
-                     (tracker.py)
-                           │
-                           ▼
-                     SQLite Database
-                    (leaderboard.db)
-                           │
-            ┌──────────────┴──────────────┐
-            ▼                             ▼
-      Excel Export                 Statistics
- (excel_exporter.py)          (statistics.py)
-            │
-            ▼
-      Excel Workbook
-            │
-            ▼
-      Graph API Client
-      (graph_client.py)
-            │
-            ▼
-        Microsoft OneDrive
+LinkedIn
+      │
+      ▼
+tracker.py
+      │
+      ▼
+leaderboard.db (SQLite)
+      │
+      ▼
+excel_exporter.py
+      │
+      ▼
+LinkedIn Games.xlsx
+      │
+      ▼
+graph_client.py (Future)
+      │
+      ▼
+OneDrive
 ```
-
----
-
-# Design Principles
-
-- SQLite là nguồn dữ liệu duy nhất (Single Source of Truth).
-- Mỗi module chỉ đảm nhiệm một nhiệm vụ.
-- Không module nào phụ thuộc trực tiếp vào LinkedIn ngoài tracker.py.
-- Các module có thể được thay thế độc lập.
 
 ---
 
@@ -48,301 +32,260 @@ Mục tiêu của project là xây dựng một hệ thống chạy hoàn toàn 
 
 ```
 linkedin-games-tracker/
-│
-├── tracker.py
-├── excel_exporter.py
-├── graph_client.py
-├── statistics.py
-│
-├── config.json
-├── .env
-│
-├── leaderboard.db
-│
-├── output/
-│   └── LinkedIn Games Tracker.xlsx
-│
-├── logs/
-│
-└── ARCHITECTURE.md
+
+tracker.py
+excel_exporter.py
+graph_client.py          # Future
+config.py                # Future
+requirements.txt
+
+leaderboard.db
+LinkedIn Games.xlsx
 ```
 
 ---
 
-# Module Responsibilities
+# Components
 
 ## tracker.py
 
-Responsibilities
+Responsible for:
 
-- Authenticate với LinkedIn
-- Gọi GraphQL API
-- Parse response
-- Tính LocalRank
-- Lưu dữ liệu vào SQLite
-- Không tạo Excel
-- Không upload file
+- Downloading leaderboard data
+- Parsing LinkedIn responses
+- Updating SQLite
+- Maintaining historical data
 
-Input
+SQLite is the single source of truth.
 
-- config.json
-- .env
+---
 
-Output
+## leaderboard.db
 
-- leaderboard.db
+Stores all historical game results.
+
+Main table contains:
+
+- ActualDate
+- Game
+- PlayerName
+- TimeElapsed
+- HintFree
+- MistakeFree
+- LocalRank
+
+Excel is always regenerated from this database.
 
 ---
 
 ## excel_exporter.py
 
-Responsibilities
+Responsible for:
 
-- Đọc SQLite
-- Sinh Workbook
-- Format Excel
-- Tạo Dashboard
+- Loading SQLite into pandas DataFrames
+- Computing analytics
+- Creating Excel workbook
+- Formatting worksheets
+- Saving final report
 
-Input
+This module contains both analytics and rendering.
 
-- leaderboard.db
+Typical workflow:
 
-Output
+```
+run()
 
-- output/LinkedIn Games Tracker.xlsx
+↓
+
+load_data()
+
+↓
+
+create_workbook()
+
+↓
+
+create_summary_sheet()
+
+↓
+
+create_game_sheet()
+
+↓
+
+save_workbook()
+```
 
 ---
 
-## statistics.py
+# Design Pattern
 
-Responsibilities
+Analytics and Excel rendering are separated by method.
 
-- Tính toán thống kê
+Example:
 
-Ví dụ
+```
+get_overall_statistics()
 
-- Win Count
+↓
+
+DataFrame
+
+↓
+
+write_overall_statistics()
+```
+
+Same pattern applies to every dashboard block.
+
+```
+get_latest_results()
+write_latest_results()
+
+get_performance_statistics()
+write_performance_statistics()
+
+...
+```
+
+---
+
+# Workbook Structure
+
+```
+Summary
+
+Crossclimb
+
+Queens
+
+Zip
+
+Pinpoint
+
+Tango
+
+Mini Sudoku
+
+Patches
+```
+
+Each game sheet contains raw historical data.
+
+Summary contains aggregated analytics.
+
+---
+
+# Summary Dashboard
+
+Contains multiple independent sections.
+
+## Report Information
+
+- Report Generated
+- Latest Game Data
+- Players
+- Games
+- Total Days
+
+---
+
+## Overall Statistics
+
+Per-player metrics:
+
+- Games
+- Wins
+- Average Rank
 - Average Time
-- Best Time
-- Streak
-- Ranking
-
-Input
-
-- leaderboard.db
-
-Output
-
-- JSON hoặc DataFrame
 
 ---
 
-## graph_client.py
+## Latest Results
 
-Responsibilities
+Latest available result for every game.
 
-- Authenticate Microsoft Graph
-- Upload file lên OneDrive
-- Sau này có thể:
-    - Teams
-    - SharePoint
-    - Outlook
-
-Input
-
-- Excel Workbook
-
-Output
-
-- File trên OneDrive
+Pivot table format.
 
 ---
 
-# Database
+## Performance Statistics
 
-Database
+Per-player metrics:
 
-```
-leaderboard.db
-```
-
-Main Table
-
-```
-Leaderboard
-```
-
-Columns
-
-- RetrievedAt
-- PuzzleDate
-- Game
-- PlayerUrn
-- PlayerName
-- Rank
-- LocalRank
-- TimeElapsed
-- HintFree
-- MistakeFree
-
-SQLite được xem là nguồn dữ liệu duy nhất của toàn bộ hệ thống.
+- Win Rate
+- Hint-Free Rate
+- Mistake-Free Rate
+- Perfect Rate
 
 ---
 
-# Configuration
+# Formatting
 
-## config.json
+Implemented with openpyxl.
 
-Lưu các cấu hình không nhạy cảm.
+Includes:
 
-Ví dụ
+- Borders
+- Header styling
+- AutoFilter
+- Freeze Panes
+- Auto column width
+- Conditional Formatting
+- Percentage formatting
 
-- GraphQL URLs
-- Danh sách người chơi
-- Mapping game
-
----
-
-## .env
-
-Lưu thông tin nhạy cảm.
-
-Ví dụ
-
-```
-COOKIE=...
-
-TENANT_ID=...
-CLIENT_ID=...
-CLIENT_SECRET=...
-
-TOKEN_CACHE=token_cache.bin
-```
-
-Không commit file này lên Git.
+Percentage formatting is applied using each block's header row rather than assuming row 1.
 
 ---
 
-# Hardware
-
-Current Target
-
-- Raspberry Pi 4
-- 32GB+ SD Card hoặc SSD
-- Internet
-
-Không yêu cầu GPU.
-
----
-
-# Software
-
-Operating System
-
-- Raspberry Pi OS Lite
-
-Runtime
-
-- Python 3.12+
-
-Main Libraries
-
-- requests
-- sqlite3
-- openpyxl
-- msal
-- python-dotenv
-
----
-
-# Execution Flow
-
-```
-Cron
-
-↓
-
-tracker.py
-
-↓
-
-leaderboard.db
-
-↓
-
-excel_exporter.py
-
-↓
-
-LinkedIn Games Tracker.xlsx
-
-↓
+# Future Component
 
 graph_client.py
+
+Responsibilities:
+
+- Authenticate using MSAL
+- Acquire access token
+- Upload Excel report
+- Download files (optional)
+
+Workflow:
+
+```
+Excel
+
+↓
+
+MSAL Authentication
+
+↓
+
+Microsoft Graph
 
 ↓
 
 OneDrive
 ```
 
----
+Authentication will use:
 
-# Logging
+- Device Code Flow
+- Delegated Permissions
+- Public Client
+- No Client Secret
 
-Toàn bộ chương trình ghi log vào
+Required permissions:
 
-```
-logs/
-```
-
-Ví dụ
-
-```
-2026-08-01.log
-```
-
-Các thông tin cần log
-
-- Start Job
-- API Request
-- API Error
-- Insert Records
-- Export Excel
-- Upload Success
-- Upload Failed
+- User.Read
+- Files.ReadWrite
+- offline_access
 
 ---
 
-# Future Roadmap
+# Architecture Principles
 
-## Version 1.0
-
-- SQLite
-- Excel Export
-- Raspberry Pi
-- OneDrive Upload
-
----
-
-## Version 1.1
-
-- Dashboard đẹp hơn
-- Chart
-- Win Rate
-- Average Time
-
----
-
-## Version 1.2
-
-- Teams Notification
-- Email Report
-
----
-
-## Version 2.0
-
-- Web Dashboard
-- REST API
-- Docker
-- Multi-user
+- SQLite is the single source of truth.
+- Excel is generated from scratch every run.
+- Analytics are calculated from pandas DataFrames.
+- Excel only presents data.
+- Microsoft Graph is responsible only for file transport.
