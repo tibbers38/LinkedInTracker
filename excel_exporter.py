@@ -1,6 +1,5 @@
 from datetime import datetime
 import sqlite3
-import statistics
 from openpyxl.utils import get_column_letter
 
 import pandas as pd
