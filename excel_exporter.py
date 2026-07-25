@@ -9,6 +9,8 @@ from openpyxl.utils import get_column_letter
 from openpyxl.styles import Border, Side
 from openpyxl.styles import PatternFill
 from openpyxl.formatting.rule import CellIsRule
+from openpyxl.utils.dataframe import dataframe_to_rows
+from openpyxl.chart import LineChart, Reference
 
 class ExcelExporter:
 
@@ -83,8 +85,8 @@ class ExcelExporter:
         self.format_header(worksheet)
         self.auto_fit_columns(worksheet)
         self.write_overall_statistics(worksheet)
-        self.write_latest_results(worksheet)
-        self.write_performance_statistics(worksheet)
+        self.write_latest_results(worksheet, start_row=3, start_col=4)
+        self.write_overall_trend(worksheet)
 
     def get_overall_statistics(self):
         statistics = (
@@ -99,6 +101,29 @@ class ExcelExporter:
         )
         statistics["AvgRank"] = statistics["AvgRank"].round(2)
         statistics["AvgTime"] = statistics["AvgTime"].round(1)
+        performance_stats = (
+            self.data
+            .groupby("PlayerName")
+            .agg(
+                #WinRate=("LocalRank", lambda x: (x == 1).mean()),
+                HintFreeRate=("HintFree", "mean"),
+                MistakeFreeRate=("MistakeFree", "mean"),
+            )
+        )
+        perfect_rate = (
+            self.data
+            .groupby("PlayerName")
+            .apply(
+                lambda group: (
+                    (group["HintFree"] == 1)
+                    &
+                    (group["MistakeFree"] == 1)
+                ).mean(),
+                include_groups=False
+            )
+        )
+        performance_stats["PerfectRate"] = perfect_rate
+        statistics = statistics.join(performance_stats)
         return statistics
     
     def write_overall_statistics(self, worksheet):
@@ -140,59 +165,71 @@ class ExcelExporter:
         )
         return latest_results
 
-    def write_latest_results(self, worksheet):
+    def write_latest_results(self, worksheet, start_row, start_col):
         latest_results = self.get_latest_results()
-        worksheet.append([])
-        worksheet.append(["Latest Results"])
-        worksheet.append(latest_results.reset_index().columns.tolist())
-        for row in latest_results.reset_index().itertuples(index=False):
-            worksheet.append(row)
+        # Title
+        worksheet.cell(row=start_row, column=start_col).value = "Latest Results"
+        # Data
+        for r, row in enumerate(
+            dataframe_to_rows(latest_results.reset_index(), index=False, header=True),
+            start=start_row + 1
+        ):
+            for c, value in enumerate(row, start=start_col):
+                worksheet.cell(row=r, column=c).value = value
 
-    def get_performance_statistics(self):
-        performance_stats = (
+    def get_overall_trend(self):
+        return (
             self.data
-            .groupby("PlayerName")
-            .agg(
-                WinRate=("LocalRank", lambda x: (x == 1).mean()),
-                HintFreeRate=("HintFree", "mean"),
-                MistakeFreeRate=("MistakeFree", "mean"),
-            )
+            .groupby(["ActualDate", "PlayerName"], as_index=False)
+            .agg(AvgRank=("LocalRank", "mean"))
+            .sort_values(["ActualDate", "PlayerName"])
         )
-        perfect_rate = (
-            self.data
-            .groupby("PlayerName")
-            .apply(
-                lambda group: (
-                    (group["HintFree"] == 1)
-                    &
-                    (group["MistakeFree"] == 1)
-                ).mean(),
-                include_groups=False
-            )
-        )
-        performance_stats["PerfectRate"] = perfect_rate
-        return performance_stats
 
-    def write_performance_statistics(self, worksheet):
-        performance_stats = self.get_performance_statistics()
-        worksheet.append([])
-        worksheet.append(["Performance Statistics"])
-        header_row = worksheet.max_row + 1
-        worksheet.append(
-            performance_stats.reset_index().columns.tolist()
+    def write_overall_trend(self, worksheet):
+        trend = (
+            self.get_overall_trend()
+            .pivot(
+                index="ActualDate",
+                columns="PlayerName",
+                values="AvgRank"
+            )
+            .reset_index()
         )
-        for row in performance_stats.reset_index().itertuples(index=False):
-            worksheet.append(row)
-        self.format_percentage_columns(
+        start_row = 18
+        start_col = 1
+        # Title
+        worksheet.cell(row=start_row, column=start_col).value = "Overall Trend"
+        # Write table
+        for r, row in enumerate(
+            dataframe_to_rows(trend, index=False, header=True),
+            start=start_row + 1
+        ):
+            for c, value in enumerate(row, start=start_col):
+                worksheet.cell(row=r, column=c).value = value
+        # ------------------------
+        # Create chart
+        # ------------------------
+        chart = LineChart()
+        data = Reference(
             worksheet,
-            header_row,
-            [
-                "WinRate",
-                "HintFreeRate",
-                "MistakeFreeRate",
-                "PerfectRate"
-            ]
+            min_col=start_col + 1,
+            max_col=start_col + len(trend.columns) - 1,
+            min_row=start_row + 1,
+            max_row=start_row + len(trend)
         )
+        categories = Reference(
+            worksheet,
+            min_col=start_col,
+            min_row=start_row + 2,
+            max_row=start_row + len(trend)
+        )
+        chart.add_data(data, titles_from_data=True)
+        chart.set_categories(categories)
+        chart.title = "Average Rank Trend"
+        chart.y_axis.title = "Average Rank"
+        chart.x_axis.title = "Date"
+        chart.y_axis.scaling.orientation = "maxMin"
+        worksheet.add_chart(chart, "G18")
 
     def get_column_letter_by_header(self, worksheet, header_row, header_name):
         for cell in worksheet[header_row]:
