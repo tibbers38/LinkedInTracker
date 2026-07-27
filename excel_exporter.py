@@ -47,13 +47,31 @@ class ExcelExporter:
 
         print("[+] Workbook created")
     
-    def create_game_sheet(self, game_name):
-        worksheet = self.workbook.create_sheet(game_name)
-        game_data = self.data[self.data["Game"] == game_name]
+    # def create_game_sheet(self, game_name):
+    #     worksheet = self.workbook.create_sheet(game_name)
+    #     game_data = self.data[self.data["Game"] == game_name]
+    #     game_data = game_data[
+    #         ["ActualDate", "PlayerName", "LocalRank", "TimeElapsed", "HintFree", "MistakeFree"]
+    #     ]
+    #     game_data = game_data.sort_values(by=["ActualDate", "PlayerName"])
+    #     worksheet.append(game_data.columns.tolist())
+    #     for row in game_data.itertuples(index=False):
+    #         worksheet.append(row)
+    #     self.format_header(worksheet)
+    #     self.auto_fit_columns(worksheet)
+    #     self.add_borders(worksheet)
+    #     self.freeze_header(worksheet)
+    #     self.add_filter(worksheet)
+    #     self.apply_conditional_formatting(worksheet)
+    
+    def create_game_sheet(self):
+        worksheet = self.workbook.create_sheet("Raw")
+        # game_data = self.data[self.data["Game"] == game_name]
+        game_data = self.data
         game_data = game_data[
-            ["ActualDate", "PlayerName", "LocalRank", "TimeElapsed", "HintFree", "MistakeFree"]
+            ["RetrievedAt", "ActualDate", "Game", "PlayerName", "LocalRank", "TimeElapsed", "HintFree", "MistakeFree"]
         ]
-        game_data = game_data.sort_values(by=["ActualDate", "PlayerName"])
+        # game_data = game_data.sort_values(by=["ActualDate", "PlayerName"])
         worksheet.append(game_data.columns.tolist())
         for row in game_data.itertuples(index=False):
             worksheet.append(row)
@@ -349,8 +367,9 @@ class ExcelExporter:
         self.load_data()
         self.create_workbook()
         self.create_summary_sheet()
-        for game in self.games:
-            self.create_game_sheet(game)
+        # for game in self.games:
+        #     self.create_game_sheet(game)
+        self.create_game_sheet()
         self.save_workbook()
 
 

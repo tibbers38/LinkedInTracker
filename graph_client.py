@@ -89,5 +89,6 @@ class GraphClient:
                 headers=self._headers(),
                 data=f,
             )
+        print("[+] File uploaded to OneDrive successfully.")
         response.raise_for_status()
         return response.json()

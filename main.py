@@ -17,16 +17,16 @@ def main():
     exporter.run()
 
     # Step 3: Upload Excel file to OneDrive using Microsoft Graph API
-    # graph = GraphClient(
-    #     client_id=config["graph"]["client_id"],
-    #     tenant_id=config["graph"]["tenant_id"],
-    #     scopes=config["graph"]["scopes"],
-    # )
-    # graph.authenticate()
-    # graph.upload_file(
-    #     local_path="result.xlsx",
-    #     remote_path="Documents/result.xlsx",
-    # )
+    graph = GraphClient(
+        client_id=config["graph"]["client_id"],
+        tenant_id=config["graph"]["tenant_id"],
+        scopes=config["graph"]["scopes"],
+    )
+    graph.authenticate()
+    graph.upload_file(
+        local_path="result.xlsx",
+        remote_path=config["onedrive"]["path"],
+    )
 
 if __name__ == "__main__":
     main()
