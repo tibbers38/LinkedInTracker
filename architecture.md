@@ -2,46 +2,45 @@
 
 ## Overview
 
-The project automatically retrieves LinkedIn Games leaderboard data, stores it in SQLite, generates an analytical Excel report, and (future) uploads the report to OneDrive via Microsoft Graph.
+LinkedIn Games Tracker is an automated data collection and reporting pipeline that records daily LinkedIn Games leaderboard results and generates an interactive Excel dashboard.
 
-```
-LinkedIn
-      │
-      ▼
-tracker.py
-      │
-      ▼
-leaderboard.db (SQLite)
-      │
-      ▼
-excel_exporter.py
-      │
-      ▼
-LinkedIn Games.xlsx
-      │
-      ▼
-graph_client.py (Future)
-      │
-      ▼
-OneDrive
-```
+The project consists of four logical layers:
+
+1. Data Collection
+2. Data Storage
+3. Data Export
+4. Business Intelligence (Excel Dashboard)
 
 ---
 
-# Project Structure
+# Architecture
 
-```
-linkedin-games-tracker/
-
-tracker.py
-excel_exporter.py
-graph_client.py          # Future
-config.py                # Future
-requirements.txt
-
-leaderboard.db
-LinkedIn Games.xlsx
-```
+                    LinkedIn Games
+                          │
+                          ▼
+                    tracker.py
+                          │
+                          ▼
+                     SQLite Database
+                    (Source of Truth)
+                          │
+                          ▼
+                  export_excel.py
+                          │
+                          ▼
+                    RawData.xlsx
+                          │
+                          ▼
+                  Microsoft Graph API
+                          │
+                          ▼
+                  OneDrive / SharePoint
+                          │
+                          ▼
+                Dashboard.xlsx (Power Query)
+                          │
+                          ▼
+             PivotTables / PivotCharts / KPIs
 
 ---
 
@@ -49,243 +48,224 @@ LinkedIn Games.xlsx
 
 ## tracker.py
 
-Responsible for:
+Responsibilities
 
-- Downloading leaderboard data
-- Parsing LinkedIn responses
-- Updating SQLite
-- Maintaining historical data
+- Authenticate to LinkedIn
+- Download leaderboard data
+- Parse API responses
+- Normalize raw records
+- Store records into SQLite
+
+This module never performs reporting or analytics.
+
+---
+
+## SQLite Database
 
 SQLite is the single source of truth.
 
+Responsibilities
+
+- Store every leaderboard record
+- Preserve historical data
+- Support data export
+- Support future querying
+
+No calculated statistics are stored inside the database.
+
 ---
 
-## leaderboard.db
+## export_excel.py
 
-Stores all historical game results.
+Responsibilities
 
-Main table contains:
+- Read leaderboard data from SQLite
+- Export RawData.xlsx
+- Upload RawData.xlsx to OneDrive
 
+No business logic or analytics are performed here.
+
+---
+
+## RawData.xlsx
+
+This workbook is a normalized dataset.
+
+Columns
+
+- RetrievedAt
 - ActualDate
 - Game
 - PlayerName
+- LocalRank
 - TimeElapsed
 - HintFree
 - MistakeFree
-- LocalRank
 
-Excel is always regenerated from this database.
-
----
-
-## excel_exporter.py
-
-Responsible for:
-
-- Loading SQLite into pandas DataFrames
-- Computing analytics
-- Creating Excel workbook
-- Formatting worksheets
-- Saving final report
-
-This module contains both analytics and rendering.
-
-Typical workflow:
-
-```
-run()
-
-↓
-
-load_data()
-
-↓
-
-create_workbook()
-
-↓
-
-create_summary_sheet()
-
-↓
-
-create_game_sheet()
-
-↓
-
-save_workbook()
-```
+This workbook should not contain charts, PivotTables or dashboards.
 
 ---
 
-# Design Pattern
+## Dashboard.xlsx
 
-Analytics and Excel rendering are separated by method.
+Dashboard.xlsx is the reporting workbook.
 
-Example:
+It imports RawData.xlsx using Power Query.
 
-```
-get_overall_statistics()
+Responsibilities
 
-↓
+- Power Query transformations
+- Data normalization
+- Calculated columns
+- PivotTables
+- PivotCharts
+- KPI cards
+- Trend analysis
 
-DataFrame
-
-↓
-
-write_overall_statistics()
-```
-
-Same pattern applies to every dashboard block.
-
-```
-get_latest_results()
-write_latest_results()
-
-get_performance_statistics()
-write_performance_statistics()
-
-...
-```
+Dashboard.xlsx contains no manually entered data.
 
 ---
 
-# Workbook Structure
+# Power Query Layer
 
-```
-Summary
+Power Query is responsible for all data transformation.
 
-Crossclimb
+Examples
 
-Queens
+- Rename columns
+- Convert data types
+- Add calculated columns
+- Normalize values
 
-Zip
+Example calculated columns
 
-Pinpoint
-
-Tango
-
-Mini Sudoku
-
-Patches
-```
-
-Each game sheet contains raw historical data.
-
-Summary contains aggregated analytics.
+- Score
+- IsWinner
+- PerfectGame
+- Month
+- Week
+- Year
 
 ---
 
-# Summary Dashboard
+# Reporting Layer
 
-Contains multiple independent sections.
+The reporting layer is built entirely using PivotTables.
 
-## Report Information
+Example KPIs
 
-- Report Generated
-- Latest Game Data
-- Players
-- Games
-- Total Days
-
----
-
-## Overall Statistics
-
-Per-player metrics:
-
-- Games
-- Wins
 - Average Rank
+- Average Score
 - Average Time
-
----
-
-## Latest Results
-
-Latest available result for every game.
-
-Pivot table format.
-
----
-
-## Performance Statistics
-
-Per-player metrics:
-
+- Win Count
 - Win Rate
 - Hint-Free Rate
 - Mistake-Free Rate
-- Perfect Rate
+- Perfect Game Rate
+
+Example Charts
+
+- Rank Trend
+- Score Trend
+- Average Rank by Game
+- Win Distribution
+- Performance by Player
 
 ---
 
-# Formatting
+# Data Refresh Flow
 
-Implemented with openpyxl.
+23:00 Daily
 
-Includes:
+↓
 
-- Borders
-- Header styling
-- AutoFilter
-- Freeze Panes
-- Auto column width
-- Conditional Formatting
-- Percentage formatting
+tracker.py
 
-Percentage formatting is applied using each block's header row rather than assuming row 1.
+↓
+
+SQLite
+
+↓
+
+RawData.xlsx
+
+↓
+
+Upload to OneDrive
+
+↓
+
+Next morning
+
+↓
+
+Open Dashboard.xlsx
+
+↓
+
+Refresh All
+
+↓
+
+Dashboard updated
 
 ---
 
-# Future Component
+# Design Principles
 
-graph_client.py
+## Single Source of Truth
 
-Responsibilities:
-
-- Authenticate using MSAL
-- Acquire access token
-- Upload Excel report
-- Download files (optional)
-
-Workflow:
-
-```
-Excel
-
-↓
-
-MSAL Authentication
-
-↓
-
-Microsoft Graph
-
-↓
-
-OneDrive
-```
-
-Authentication will use:
-
-- Device Code Flow
-- Delegated Permissions
-- Public Client
-- No Client Secret
-
-Required permissions:
-
-- User.Read
-- Files.ReadWrite
-- offline_access
+SQLite is the authoritative data source.
 
 ---
 
-# Architecture Principles
+## Separation of Responsibilities
 
-- SQLite is the single source of truth.
-- Excel is generated from scratch every run.
-- Analytics are calculated from pandas DataFrames.
-- Excel only presents data.
-- Microsoft Graph is responsible only for file transport.
+tracker.py
+
+- Collect data
+
+SQLite
+
+- Store data
+
+export_excel.py
+
+- Export data
+
+Power Query
+
+- Transform data
+
+PivotTables
+
+- Analyze data
+
+Dashboard
+
+- Present data
+
+---
+
+## Advantages
+
+- Minimal Python reporting code
+- Easy to add new KPIs
+- Easy to create new charts
+- No dashboard logic inside Python
+- Excel performs analytics using native features
+- Clear separation between ETL and reporting
+
+---
+
+# Future Enhancements
+
+Possible future improvements
+
+- Automatic Dashboard refresh
+- Power Automate integration
+- Email report
+- Teams notification
+- Player performance prediction
+- Historical leaderboard archive
+- Power BI integration

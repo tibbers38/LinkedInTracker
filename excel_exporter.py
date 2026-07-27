@@ -3,7 +3,7 @@ import sqlite3
 from openpyxl.utils import get_column_letter
 
 import pandas as pd
-from openpyxl import Workbook, worksheet
+from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment
 from openpyxl.utils import get_column_letter
 from openpyxl.styles import Border, Side
