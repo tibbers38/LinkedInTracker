@@ -25,10 +25,10 @@ The project consists of four logical layers:
                     (Source of Truth)
                           │
                           ▼
-                  export_excel.py
+                  excel_exporter.py
                           │
                           ▼
-                    RawData.xlsx
+                    result.xlsx
                           │
                           ▼
                   Microsoft Graph API
@@ -37,7 +37,7 @@ The project consists of four logical layers:
                   OneDrive / SharePoint
                           │
                           ▼
-                Dashboard.xlsx (Power Query)
+                Summary.xlsx (Power Query)
                           │
                           ▼
              PivotTables / PivotCharts / KPIs
