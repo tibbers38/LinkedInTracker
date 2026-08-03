@@ -69,9 +69,14 @@ class LinkedInTracker:
             })
             # Sort by overall rank
             players.sort(key=lambda p: p["rank"])
-            # LocalRank
-            for index, player in enumerate(players, start=1):
-                player["local_rank"] = index
+            previous_rank = None
+            local_rank = 0
+            for player in players:
+                if player["rank"] != previous_rank:
+                    local_rank += 1
+
+                player["local_rank"] = local_rank
+                previous_rank = player["rank"]
         return players
     
     def save_players(self, players, retrieved_at, actual_date):
@@ -193,7 +198,10 @@ class LinkedInTracker:
             data = response.json()
             players = self.parse_response(game_name, data)
             retrieved_at = datetime.now()
-            actual_date = (retrieved_at - timedelta(days=1)).date().isoformat()
+            if retrieved_at.hour < 14:
+                actual_date = (retrieved_at - timedelta(days=2)).date().isoformat()
+            else:
+                actual_date = (retrieved_at - timedelta(days=1)).date().isoformat()
             self.save_players(players, retrieved_at, actual_date)
 
 if __name__ == "__main__":
